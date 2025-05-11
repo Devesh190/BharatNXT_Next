@@ -47,42 +47,46 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(12),
                 child: TextField(
                   decoration: const InputDecoration(
-                    isDense: true,
                     hintText: 'Search...',
                     prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                    border: OutlineInputBorder(),
                   ),
                   onChanged: (value) => provider.search(value),
                 ),
               ),
               Expanded(
-                child: provider.isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : provider.errorMessage.isNotEmpty
-                    ? Center(child: Text(provider.errorMessage))
-                    : ListView.builder(
-                  itemCount: provider.articles.length,
-                  itemBuilder: (context, index) {
-                    final article = provider.articles[index];
-                    return ArticleCard(
-                      article: article,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                DetailScreen(article: article),
-                          ),
-                        );
-                      },
-                    );
-                  },
+                child: RefreshIndicator(
+                  onRefresh: provider.loadArticles,
+                  child: provider.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : provider.errorMessage.isNotEmpty
+                      ? Center(child: Text(provider.errorMessage))
+                      : ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: provider.articles.length,
+                    itemBuilder: (context, index) {
+                      final article = provider.articles[index];
+                      return ArticleCard(
+                        article: article,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  DetailScreen(article: article),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
           );
         },
       ),
+
     );
   }
 }

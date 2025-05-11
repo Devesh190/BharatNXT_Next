@@ -10,6 +10,7 @@ A Flutter app that fetches and displays a list of articles from a public API.
 - Add/remove favorites
 - Favorites tab with persistent storage
 - Responsive UI with error and loading states
+- Pull-to-refresh support
 
 ## Setup Instructions
 
@@ -42,7 +43,6 @@ UI widgets like ArticleCard and HomeScreen use Consumer widgets or Provider.of()
 to respond to state changes and rebuild efficiently
 
 ## Known Issues / Limitations
-Pull-to-refresh is not yet implemented.
 
 No pagination – all posts are fetched at once.
 
